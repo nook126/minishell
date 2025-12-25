@@ -6,7 +6,7 @@
 /*   By: aleriaza <aleriaza@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 15:43:33 by ariazano          #+#    #+#             */
-/*   Updated: 2025/12/25 17:05:47 by aleriaza         ###   ########.fr       */
+/*   Updated: 2025/12/25 17:35:57 by aleriaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,32 @@ char	*get_env_var(char *name, char **env);
 /* errors.c */
 void	print_error(char *msg);
 void 	exit_error(char *msg, int code);
+
+/* find_path.c */
+char	*find_command(char *cmd, char **env);
+char	*get_path_env(char **env);
+char	**split_path(char *path_env);
+int		is_executable(char *path);
+char	*join_path_cmd(char *dir, char *cmd);
+
+/* execute.c */
+int		execute_command(char **args, t_shell *shell);
+int		fork_and_exec(char **args, t_shell *shell);
+void	execute_child(char **args, char **env);
+int		is_absolute_path(char *str);
+int		is_relative_path(char *str);
+
+/* string_utils.c */
+void	free_array(char **arr);
+int		array_len(char **arr);
+char	*ft_strjoin_free(char *s1, char *s2);
+
+/* tokenize.c */
+char	**tokenize_input(char *input);
+int		count_words(char *str);
+char	*extract_word(char *str, int start, int len);
+int		get_word_len(char *str, int start);
+int		is_space(char c);
 
 
 

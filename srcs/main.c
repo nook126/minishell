@@ -6,7 +6,7 @@
 /*   By: aleriaza <aleriaza@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 16:06:23 by aleriaza          #+#    #+#             */
-/*   Updated: 2025/12/25 16:55:37 by aleriaza         ###   ########.fr       */
+/*   Updated: 2025/12/25 17:37:12 by aleriaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,16 @@ static t_shell	*init_shell(char **envp)
 
 static void	process_line(char *line, t_shell *shell)
 {
+	char **tokens;
+	
 	if (!line || line[0] == '\0')
 		return ;
 	add_history(line);
+	tokens = tokenize_input(line);
+	if (!tokens)
+		return ;
+	execute_command(tokens, shell);
+	free_array(tokens);
 	printf("You typed: %s\n", line);
 	(void)shell;
 }

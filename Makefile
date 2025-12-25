@@ -10,7 +10,11 @@ LIBFT = $(LIBFT_DIR)/libft.a
 SRCS = srcs/main.c \
        srcs/signals/signals.c \
        srcs/utils/env_utils.c \
-       srcs/utils/errors.c
+       srcs/utils/errors.c \
+	   srcs/utils/string_utils.c \
+       srcs/parser/tokenize.c \
+       srcs/executor/find_path.c \
+       srcs/executor/execute.c
 
 OBJS = $(SRCS:.c=.o)
 
