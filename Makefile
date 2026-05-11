@@ -7,6 +7,8 @@ LDFLAGS = -lreadline
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
+OBJ_DIR = obj
+
 SRCS =	srcs/main.c \
 		srcs/signals/signals.c \
 		srcs/utils/env_utils.c \
@@ -24,7 +26,7 @@ SRCS =	srcs/main.c \
 		srcs/executor/find_path.c \
 		srcs/executor/execute.c
 
-OBJS = $(SRCS:.c=.o)
+OBJS = $(patsubst %.c, $(OBJ_DIR)/%.o, $(SRCS))
 
 all: $(NAME)
 
@@ -34,11 +36,12 @@ $(NAME): $(LIBFT) $(OBJS)
 $(LIBFT):
 	make -C $(LIBFT_DIR)
 
-%.o: %.c
+$(OBJ_DIR)/%.o: %.c
+	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJS)
+	rm -rf $(OBJ_DIR)
 	make -C $(LIBFT_DIR) clean
 
 fclean: clean
