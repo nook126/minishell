@@ -6,7 +6,7 @@
 /*   By: dprudnik <dprudnik@student.42wolfsburg.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:32:39 by dprudnik          #+#    #+#             */
-/*   Updated: 2026/05/13 22:28:53 by denis            ###   ########.fr       */
+/*   Updated: 2026/05/16 13:59:20 by dprudnik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ int	exec_exit(t_cmd *cmd, t_shell *shell)
 		print_error("exit: too many arguments");
 		exit_code = 2;
 	}
-	if (!shell->in_child)
+	// printf("%d", shell->in_child);
+	if (shell->in_child == 0)
 		write(1, "exit\n", 5);
 	free_cmd_list(cmd);
 	if (shell->env)

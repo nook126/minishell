@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute_pipes.c                                    :+:      :+:    :+:   */
+/*   run_commands.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aleriaza <aleriaza@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 16:43:43 by aleriaza          #+#    #+#             */
-/*   Updated: 2026/05/12 17:24:27 by dprudnik         ###   ########.fr       */
+/*   Updated: 2026/05/16 13:58:24 by dprudnik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ void	child_process(t_exec *ex)
 	if (ex->cmd->next)
 		setup_output_pipe(ex->pipe.fd);
 	if (is_builtin(ex->cmd->args[0]))
-		execute_builtin(ex->cmd, ex->shell);
+		exit(execute_builtin(ex->cmd, ex->shell));
 	else
 	{
 		// if (ex->cmd->redirs != NULL)
