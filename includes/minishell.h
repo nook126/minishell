@@ -6,7 +6,7 @@
 /*   By: aleriaza <aleriaza@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 15:43:33 by ariazano          #+#    #+#             */
-/*   Updated: 2026/05/15 15:13:06 by dprudnik         ###   ########.fr       */
+/*   Updated: 2026/05/16 13:27:20 by aleriaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_token
 /* Shell context — env copy + last return code */
 typedef struct s_shell
 {
+	int		in_child;
 	char	**env;
 	int		exit_status;
 }	t_shell;

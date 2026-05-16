@@ -6,7 +6,7 @@
 /*   By: aleriaza <aleriaza@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 16:06:23 by aleriaza          #+#    #+#             */
-/*   Updated: 2026/02/09 19:25:16 by aleriaza         ###   ########.fr       */
+/*   Updated: 2026/05/16 13:27:29 by aleriaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ static t_shell	*init_shell(char **envp)
 		free(shell);
 		exit_error("env copy failed", 1);
 	}
+	shell->in_child = 0;
 	shell->exit_status = 0;
 	return (shell);
 }
