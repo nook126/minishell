@@ -24,10 +24,13 @@ int	exec_pwd(t_cmd *cmd, t_shell *shell)
 		shell->exit_status = 2;
 		return (2);
 	}
-	path = get_env_var("PWD", shell->env);
-	if (!path)
-		print_error("pwd: get_env_var failed!");
+    path = getcwd(NULL, 0);
+    if (!path) {
+        print_error("pwd");
+        return (1);
+    }
 	ft_printf("%s\n", path);
+    free(path);
 	return (0);
 }
 
@@ -69,7 +72,8 @@ int	exec_exit(t_cmd *cmd, t_shell *shell)
 		print_error("exit: too many arguments");
 		exit_code = 2;
 	}
-	write(1, "exit\n", 5);
+	if (!shell->in_child)
+		write(1, "exit\n", 5);
 	free_cmd_list(cmd);
 	if (shell->env)
 		free_env(shell->env);

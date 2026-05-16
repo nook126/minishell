@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-// TODO : need to change. Refer to Documentation.
 void	run_commands(t_cmd *cmds, t_shell *shell)
 {
 	if (cmds->next == NULL)
@@ -42,7 +41,7 @@ int	execute_builtin(t_cmd *cmd, t_shell *shell)
 		{
 			shell->exit_status = 1;
 			return (-1);
-		} 
+		}
 		apply_redirections(cmd->redirs);
 		exit_code = select_builtin(cmd, shell);
 		restore_std_fds(saved_stdin, saved_stdout);
@@ -109,21 +108,22 @@ static void	wait_children(t_pipe *pipe, t_shell *shell)
 	}
 }
 
-// FIX : when bellow code is uncommented piping does not work.
+// FIX : when bellow code is uncommented redirection does not work.
 void	child_process(t_exec *ex)
 {
+	ex->shell->in_child = 1;
 	if (ex->pipe.in != STDIN_FILENO)
 		setup_input_pipe(ex->pipe.in);
 	if (ex->cmd->next)
 		setup_output_pipe(ex->pipe.fd);
-	// if (is_builtin(ex->cmd->args[0]))
-	// 	execute_builtin(ex->cmd, ex->shell);
-	// else
-	// {
+	if (is_builtin(ex->cmd->args[0]))
+		execute_builtin(ex->cmd, ex->shell);
+	else
+	{
 		// if (ex->cmd->redirs != NULL)
 		// 	apply_redirections(ex->cmd->redirs);
-	execute_child(ex->cmd->args, ex->shell->env);
-	// }
+		execute_child(ex->cmd->args, ex->shell->env);
+	}
 }
 
 void	parent_process(t_exec *ex)
