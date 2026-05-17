@@ -59,10 +59,8 @@ static int	handle_squote(char *val, int i, char **res)
 static int	handle_dquote(char *val, int i, char **res, t_shell *shell)
 {
 	char	*tmp;
-	char	buf[2];
 
 	i++;
-	buf[1] = '\0';
 	while (val[i] && val[i] != '"')
 	{
 		if (val[i] == '$')
@@ -73,13 +71,14 @@ static int	handle_dquote(char *val, int i, char **res, t_shell *shell)
 		}
 		else
 		{
-			buf[0] = val[i];
-			*res = ft_strjoin_free(*res, buf);
-			i++;
+			if (val[i] == '\\' && (val[i + 1] == '"' || val[i + 1] == '\\'))
+				i++;
+			tmp = ft_substr(val, i++, 1);
+			*res = ft_strjoin_free(*res, tmp);
+			free(tmp);
 		}
 	}
-	if (val[i] == '"')
-		i++;
+	i += (val[i] == '"');
 	return (i);
 }
 
@@ -88,28 +87,23 @@ char	*expand_token(char *val, t_shell *shell)
 	char	*res;
 	char	*tmp;
 	int		i;
-	char	buf[2];
 
 	res = ft_strdup("");
 	i = 0;
-	buf[1] = '\0';
 	while (val[i] && res)
 	{
 		if (val[i] == '\'')
 			i = handle_squote(val, i, &res);
 		else if (val[i] == '"')
 			i = handle_dquote(val, i, &res, shell);
-		else if (val[i] == '$')
-		{
-			tmp = handle_dollar(val, &i, shell);
-			res = ft_strjoin_free(res, tmp);
-			free(tmp);
-		}
 		else
 		{
-			buf[0] = val[i];
-			res = ft_strjoin_free(res, buf);
-			i++;
+			if (val[i] == '$')
+				tmp = handle_dollar(val, &i, shell);
+			else
+				tmp = ft_substr(val, i++, 1);
+			res = ft_strjoin_free(res, tmp);
+			free(tmp);
 		}
 	}
 	return (res);

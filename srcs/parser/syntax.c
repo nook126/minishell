@@ -40,14 +40,11 @@ int	check_unclosed_quotes(char *input)
 
 static int	check_pipe_char(char *input, int *i, int *has_content, int *had_pipe)
 {
-	int	ret;
-
 	if (is_quote(input[*i]))
 	{
-		ret = jump_past_quote(input, *i);
-		if (ret == -1)
+		*i = jump_past_quote(input, *i);
+		if (*i == -1)
 			return (-1);
-		*i = ret;
 		*has_content = 1;
 	}
 	else if (input[*i] == '|')
@@ -93,5 +90,7 @@ int	validate_input(char *input)
 		return (syntax_error("unclosed quote"));
 	if (check_pipe_syntax(input) == -1)
 		return (syntax_error("syntax error near unexpected token `|'"));
+	if (check_redir_syntax(input) == -1)
+		return (syntax_error("syntax error near unexpected token `newline'"));
 	return (0);
 }

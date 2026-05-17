@@ -29,7 +29,12 @@ int	jump_past_quote(char *str, int i)
 	qchar = str[i];
 	i++;
 	while (str[i] && str[i] != qchar)
+	{
+		if (qchar == '"' && str[i] == '\\'
+			&& (str[i + 1] == qchar || str[i + 1] == '\\'))
+			i++;
 		i++;
+	}
 	if (!str[i])
 		return (-1);
 	return (i + 1);

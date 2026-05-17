@@ -196,6 +196,7 @@ int		is_redir_op(char *val);
 int		get_redir_type(char *val);
 
 /* redir_parse.c */
+int		check_redir_syntax(char *input);
 int		parse_redirs(t_token **head, t_redir **redirs);
 
 /* syntax.c */

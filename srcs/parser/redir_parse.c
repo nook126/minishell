@@ -47,6 +47,43 @@ static int	extract_one_redir(t_token **head, t_token **prev_p,
 	return (0);
 }
 
+/* Advances i past redir op, checks a valid target follows */
+static int	check_redir_arg(char *input, int *i)
+{
+	*i += 1 + (input[*i] == input[*i + 1]);
+	while (input[*i] && is_space(input[*i]))
+		(*i)++;
+	if (!input[*i] || input[*i] == '|'
+		|| input[*i] == '<' || input[*i] == '>')
+		return (-1);
+	return (0);
+}
+
+/* Checks that every < or > in raw input has a valid target token */
+int	check_redir_syntax(char *input)
+{
+	int	i;
+
+	i = 0;
+	while (input[i])
+	{
+		if (is_quote(input[i]))
+		{
+			i = jump_past_quote(input, i);
+			if (i == -1)
+				return (-1);
+		}
+		else if (input[i] == '<' || input[i] == '>')
+		{
+			if (check_redir_arg(input, &i) == -1)
+				return (-1);
+		}
+		else
+			i++;
+	}
+	return (0);
+}
+
 int	parse_redirs(t_token **head, t_redir **redirs)
 {
 	t_token	*cur;
