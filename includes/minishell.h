@@ -27,14 +27,6 @@
 //signal variable
 extern int	g_signal_received;
 
-// COLORS
-# define GREEN	"\033[0;32m"
-# define RED	"\033[1;31m"
-# define GREY	"\033[0;90m"
-# define CYAN	"\033[1;96m"
-# define YELLOW	"\033[0;33m"
-# define BLUE	"\033[1;34m"
-# define RESET	"\033[0m"
 
 /* Token node — internal, used only during parsing */
 typedef struct s_token

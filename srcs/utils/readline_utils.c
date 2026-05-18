@@ -49,7 +49,7 @@ char	*read_full_line(void)
 
 	if (!isatty(STDIN_FILENO))
 		return (read_noninteractive());
-	line = readline(GREEN"minishell> "RESET);
+	line = readline("minishell> ");
 	if (!line)
 		return (NULL);
 	while (check_unclosed_quotes(line) == -1)
