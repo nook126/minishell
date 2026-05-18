@@ -32,7 +32,7 @@ static char	*handle_dollar(char *val, int *i, t_shell *shell)
 	name = ft_substr(val, start, *i - start);
 	if (!name)
 		return (NULL);
-	value = get_env_var(name, shell->env);
+	value = get_var(name, shell->vars);
 	free(name);
 	if (!value)
 		return (ft_strdup(""));

@@ -29,11 +29,26 @@ static char	*append_line(char *base, char *cont)
 	return (result);
 }
 
+static char	*read_noninteractive(void)
+{
+	char	buf[4096];
+	size_t	len;
+
+	if (!fgets(buf, sizeof(buf), stdin))
+		return (NULL);
+	len = ft_strlen(buf);
+	if (len > 0 && buf[len - 1] == '\n')
+		buf[len - 1] = '\0';
+	return (ft_strdup(buf));
+}
+
 char	*read_full_line(void)
 {
 	char	*line;
 	char	*next;
 
+	if (!isatty(STDIN_FILENO))
+		return (read_noninteractive());
 	line = readline(GREEN"minishell> "RESET);
 	if (!line)
 		return (NULL);

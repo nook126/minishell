@@ -12,23 +12,10 @@
 
 #include "minishell.h"
 
-/* Get PATH variable from environment */
-char	*get_path_env(char **env)
+/* Get PATH value from the var linked list */
+char	*get_path_env(t_var *vars)
 {
-	int		i;
-	char	*path;
-
-	i = 0;
-	while (env[i])
-	{
-		if (ft_strncmp(env[i], "PATH=", 5) == 0)
-		{
-			path = env[i] + 5;
-			return (path);
-		}
-		i++;
-	}
-	return (NULL);
+	return (get_var("PATH", vars));
 }
 
 /* Join directory path with command name */
@@ -66,13 +53,13 @@ char	**split_path(char *path_env)
 	return (paths);
 }
 
-char	*find_command(char *cmd, char **env)
+char	*find_command(char *cmd, t_var *vars)
 {
 	char	**paths;
 	char	*full_path;
 	int		i;
 
-	paths = split_path(get_path_env(env));
+	paths = split_path(get_path_env(vars));
 	if (!paths)
 		return (NULL);
 	i = 0;

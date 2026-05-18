@@ -121,7 +121,7 @@ void	child_process(t_exec *ex)
 	{
 		if (ex->cmd->redirs != NULL)
 			apply_redirections(ex->cmd->redirs);
-		execute_child(ex->cmd->args, ex->shell->env);
+		execute_child(ex->cmd->args, ex->shell->vars);
 	}
 }
 
@@ -158,73 +158,3 @@ int	execute_pipeline(t_cmd *cmds, t_shell *shell)
 	wait_children(&ex.pipe, shell);
 	return (0);
 }
-
-/*------------------------------------------------------------*/
-/* Everything bellow is just for reference from old version!! */
-
-// // FIX : copied from old V1.0!!!.
-// static void	exec_child(t_exec *exec)
-// {
-// 	if (exec->prev_fd != -1)
-// 		dup2(exec->prev_fd, STDIN_FILENO);
-// 	if (exec->i < exec->p->cmd_count - 1)
-// 		dup2(exec->pipefd[1], STDOUT_FILENO);
-// 	if (exec->prev_fd != -1)
-// 		close(exec->prev_fd);
-// 	if (exec->i < exec->p->cmd_count - 1)
-// 	{
-// 		close(exec->pipefd[0]);
-// 		close(exec->pipefd[1]);
-// 	}
-// 	execute_child(exec->p->cmds[exec->i]->args,
-// 		exec->shell->env);
-// }
-//
-// // FIX : copied from old V1.0!!!
-// static void wait_children(int cmd_count, pid_t last_pid, t_shell *shell)
-// {
-// 	int		i;
-// 	int		status;
-// 	pid_t	pid;
-//
-// 	i = 0;
-// 	while (i < cmd_count)
-// 	{
-// 		pid = waitpid(-1, &status, 0);
-// 		if (pid == last_pid)
-// 		{
-// 			if (WIFEXITED(status))
-// 				shell->exit_status = WEXITSTATUS(status);
-// 			else if (WIFSIGNALED(status))
-// 				shell->exit_status = 128 + WTERMSIG(status);
-// 		}
-// 		i++;
-// 	}
-// }
-//
-// // TODO : change fucntionality to fit new data structure.
-// // FIX : copied from old V1.0!!!
-// int	execute_multi_cmds(t_cmd *cmds, t_shell *shell)
-// {
-// 	t_exec	exec;
-// 	pid_t	pid;
-// 	pid_t	last_pid;
-//
-// 	exec.shell = shell;
-// 	exec.i = 0;
-// 	exec.prev_fd = -1;
-// 	while (exec.i < p->cmd_count)
-// 	{
-// 		if (exec.i < p->cmd_count - 1)
-// 			pipe(exec.pipefd);
-// 		pid = fork();
-// 		if (pid == 0)
-// 			exec_child(&exec);
-// 		if (exec.i == p->cmd_count - 1)
-// 			last_pid = pid;
-// 		exec.prev_fd = handle_parent(&exec);
-// 		exec.i++;
-// 	}
-// 	wait_children(p->cmd_count, last_pid, shell);
-// 	return (0);
-// }

@@ -43,11 +43,20 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
-/* Shell context — env copy + last return code */
+/* Environment variable node */
+typedef struct s_var
+{
+	char			*name;
+	char			*value;
+	int				exported;
+	struct s_var	*next;
+}	t_var;
+
+/* Shell context — env linked list + last return code */
 typedef struct s_shell
 {
 	int		in_child;
-	char	**env;
+	t_var	*vars;
 	int		exit_status;
 }	t_shell;
 
@@ -94,20 +103,27 @@ typedef struct s_exec
 void	setup_signals(void);
 void	handle_sigint(int sig);
 
+/* var_list.c */
+t_var	*new_var(char *name, char *value, int exported);
+void	var_add_back(t_var **head, t_var *node);
+t_var	*find_var(char *name, t_var *vars);
+t_var	*envp_to_vars(char **envp);
+int		var_count(t_var *vars);
+
 /* env_utils.c */
-int		env_size(char **env);
-char	**copy_env(char **env);
-void	free_env(char **env);
-char	*get_env_var(char *name, char **env);
-int		set_env_var(char *name, char *value, t_shell *shell);
+char	*get_var(char *name, t_var *vars);
+int		set_var(char *name, char *value, int exported, t_shell *shell);
+void	unset_var(char *name, t_shell *shell);
+void	free_vars(t_var *vars);
+char	**vars_to_envp(t_var *vars);
 
 /* errors.c */
 void	print_error(char *msg);
 void	exit_error(char *msg, int code);
 
 /* find_path.c */
-char	*find_command(char *cmd, char **env);
-char	*get_path_env(char **env);
+char	*find_command(char *cmd, t_var *vars);
+char	*get_path_env(t_var *vars);
 char	**split_path(char *path_env);
 int		is_executable(char *path);
 char	*join_path_cmd(char *dir, char *cmd);
@@ -130,7 +146,7 @@ int		is_builtin(char *arg);
 /* execute.c */
 int		execute_command(t_cmd *cmd, t_shell *shell);
 int		fork_and_exec(t_cmd *cmd, t_shell *shell);
-void	execute_child(char **args, char **env);
+void	execute_child(char **args, t_var *vars);
 int		is_absolute_path(char *str);
 int		is_relative_path(char *str);
 

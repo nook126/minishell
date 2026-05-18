@@ -33,10 +33,10 @@ static char	*get_cd_path(t_cmd *cmd, t_shell *shell)
 	char	*path;
 
 	if (!cmd->args[1])
-		return (get_env_var("HOME", shell->env));
+		return (get_var("HOME", shell->vars));
 	if (cmd->args[1][0] == '-' && cmd->args[1][1] == '\0')
 	{
-		path = get_env_var("OLDPWD", shell->env);
+		path = get_var("OLDPWD", shell->vars);
 		if (!path)
 			return (print_error("cd: OLDPWD not set"), NULL);
 		ft_printf("%s\n", path);
@@ -54,14 +54,33 @@ int	exec_cd(t_cmd *cmd, t_shell *shell)
 
 	if (cmd->args[1] && cmd->args[2])
 		return (print_error("cd: too many arguments"), 1);
-	old_pwd = get_env_var("PWD", shell->env);
+	old_pwd = get_var("PWD", shell->vars);
 	path = get_cd_path(cmd, shell);
 	if (!path || path[0] == '\0')
 		return (1);
 	if (chdir(path) == -1)
 		return (cd_error(path));
-	set_env_var("OLDPWD", old_pwd ? old_pwd : "", shell);
-	set_env_var("PWD", getcwd(buf, PATH_MAX), shell);
+	set_var("OLDPWD", old_pwd ? old_pwd : "", 1, shell);
+	set_var("PWD", getcwd(buf, PATH_MAX), 1, shell);
+	return (0);
+}
+
+/* Print current working directory */
+int	exec_pwd(t_cmd *cmd, t_shell *shell)
+{
+	char	*path;
+
+	if (cmd->args[1])
+	{
+		print_error("pwd: too many arguments");
+		shell->exit_status = 2;
+		return (2);
+	}
+	path = getcwd(NULL, 0);
+	if (!path)
+		return (print_error("pwd"), 1);
+	ft_printf("%s\n", path);
+	free(path);
 	return (0);
 }
 

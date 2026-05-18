@@ -14,6 +14,7 @@ OBJ_DIR = obj
 SRCS =	srcs/main.c \
 		srcs/signals/signals.c \
 		srcs/utils/env_utils.c \
+		srcs/utils/var_list.c \
 		srcs/utils/errors.c \
 		srcs/utils/string_utils.c \
 		srcs/utils/readline_utils.c \
