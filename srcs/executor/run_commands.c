@@ -108,7 +108,6 @@ static void	wait_children(t_pipe *pipe, t_shell *shell)
 	}
 }
 
-// FIX : when bellow code is uncommented redirection does not work.
 void	child_process(t_exec *ex)
 {
 	ex->shell->in_child = 1;
@@ -120,8 +119,8 @@ void	child_process(t_exec *ex)
 		exit(execute_builtin(ex->cmd, ex->shell));
 	else
 	{
-		// if (ex->cmd->redirs != NULL)
-		// 	apply_redirections(ex->cmd->redirs);
+		if (ex->cmd->redirs != NULL)
+			apply_redirections(ex->cmd->redirs);
 		execute_child(ex->cmd->args, ex->shell->env);
 	}
 }
