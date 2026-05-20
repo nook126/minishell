@@ -49,13 +49,9 @@ void	execute_child(char **args, t_var *vars)
 		print_error("command not found");
 		exit(127);
 	}
-<<<<<<< HEAD
 	signal(SIGINT, SIG_DFL);// NOTE : Reset the signal to mormal for parent prosses.
 	signal(SIGQUIT, SIG_DFL);// NOTE : Reset the signal to mormal for parent prosses.
 	execve(cmd_path, args, envp);
-=======
-	execve(cmd_path, args, envp);
->>>>>>> origin/main
 	perror("execve");
 	exit(126);
 }
