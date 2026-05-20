@@ -84,7 +84,6 @@ int	open_pipe(t_exec *ex)
 	return (0);
 }
 
-// NOTE : dont know if allowed to use WEXITSTATUS();
 static void	wait_children(t_pipe *pipe, t_shell *shell)
 {
 	int		status;
@@ -100,8 +99,16 @@ static void	wait_children(t_pipe *pipe, t_shell *shell)
 			else if (WIFSIGNALED(status))
 				shell->exit_status = 128 + WTERMSIG(status);
 		}
+		if (WIFSIGNALED(status))
+		{
+			if (WTERMSIG(status) == SIGQUIT)
+				printf("Quit (core dumped)\n");
+			else if (WTERMSIG(status) == SIGINT)
+				printf("\n");
+		}
 		pid = waitpid(-1, &status, 0);
 	}
+	setup_signals();
 }
 
 void	child_process(t_exec *ex)
@@ -139,6 +146,7 @@ int	execute_pipeline(t_cmd *cmds, t_shell *shell)
 	ex.cmd = cmds;
 	ex.pipe.in = STDIN_FILENO;
 	ex.pipe.cmd_count = cmd_count(cmds);
+	setup_tmp_signals();// NOTE : added here to test first.
 	while (ex.cmd)
 	{
 		if (open_pipe(&ex))

@@ -10,7 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#define _XOPEN_SOURCE 500
+#include "minishell.h"
 
 /* Global variable for signal handling */
 int	g_signal_received = 0;
